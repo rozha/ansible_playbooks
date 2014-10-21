@@ -22,6 +22,7 @@ To execute:
  * **vpc\_id**: id of the VPC to run the instance in
  * **zone**: AWS availability zone
  * **ssh\_user**: user name to use to log in to the instance via SSH
+
 * invoke the following commands:
  * **export AWS\_ACCESS\_KEY=YOURIAMACCESSKEY**
  * **export AWS\_SECRET\_KEY=YOURIAMSECRETKEY**
