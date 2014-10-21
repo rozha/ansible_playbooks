@@ -1,0 +1,29 @@
+---
+- name: configure epel repository
+  command: /bin/rpm -U --force http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  when: ansible_os_family == "RedHat"
+
+- name: apt-get install proftpd
+  apt: name=proftpd
+  when: ansible_os_family == "Debian"
+
+- name: yum install proftpd
+  yum: name=proftpd
+  when: ansible_os_family == "RedHat"
+
+- name: enable proftpd
+  service: name=proftpd enabled=yes
+  when: ansible_os_family == "RedHat"
+
+- name: upload proftpd.conf to /etc/proftpd.conf (rh systems)
+  template: src=proftpd.conf.j2 dest=/etc/proftpd.conf owner=root mode=0400
+  when: ansible_os_family == "RedHat"
+
+- name: upload proftpd.conf to /etc/proftpd/proftpd.conf (debian-based systems)
+  template: src=proftpd.conf.j2 dest=/etc/proftpd/proftpd.conf owner=root mode=0400
+  when: ansible_os_family == "Debian"
+
+- name: stop proftpd
+  service: name=proftpd state=stopped
+- name: start proftpd
+  service: name=proftpd state=started

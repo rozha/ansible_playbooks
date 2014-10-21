@@ -1,0 +1,28 @@
+---
+- name: configure {{ security_group }} security group
+  local_action:
+    module: ec2_group
+    name: '{{ security_group }}'
+    description: '{{ security_group_description }}'
+    vpc_id: '{{ vpc_id }}'
+    region: '{{ region }}'
+    rules:
+      - proto: tcp
+        from_port: '{{ ftp_port }}'
+        to_port: '{{ ftp_port }}'
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: '{{ ftp_data_port }}'
+        to_port: '{{ ftp_data_port }}'
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: '{{ ssh_port }}'
+        to_port: '{{ ssh_port }}'
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: '{{ pasv_port_min }}'
+        to_port: '{{ pasv_port_max }}'
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0

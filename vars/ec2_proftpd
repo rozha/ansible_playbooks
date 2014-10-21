@@ -1,0 +1,21 @@
+#
+ftp_port: 21
+ssh_port: 22
+ftp_data_port: 20
+pasv_port_min: 25000
+pasv_port_max: 27000
+security_group: ftpd
+security_group_description: FTP server
+
+#image: ami-98aa1cf0 # Ubuntu Server 14.04 LTS (PV), SSD Volume Type, 64 bit
+#image: ami-246ed34c # Amazon Linux AMI 2014.09.1 (PV), 64 bit
+#image: ami-1643ff7e # Red Hat Enterprise Linux 6.5 (PV), 64 bit
+
+instance_type: t1.micro
+keypair: FIXME
+region: us-east-1
+vpc_id: FIXME
+zone: us-east-1c
+
+#ssh_user: ubuntu
+#ssh_user: ec2-user
