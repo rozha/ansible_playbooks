@@ -1,9 +1,9 @@
 ## ec2\_proftpd.yml
-This playbook will perform the following steps:
+This playbook will perform the following actions:
 
-* ensure the 'ftpd' security group exists (TCP 20-22, 25000-27000)
+* ensure an 'ftpd' security group exists (TCP 20-22, 25000-27000)
 * create a t1.micro instance
-* update the system
+* update the system using a package manager
 * install, configure, and run ProFTPD and fail2ban
 
 Tested with the following AMIs:
@@ -12,7 +12,7 @@ Tested with the following AMIs:
 * ami-246ed34c Amazon Linux AMI 2014.09.1 (PV), 64 bit
 * ami-1643ff7e Red Hat Enterprise Linux 6.5 (PV), 64 bit
 
-To execute:
+To use:
 
 * edit **vars/ec2\_proftpd**
  * **image**: AMI to create your new instance from
@@ -24,6 +24,6 @@ To execute:
  * **ssh\_user**: user name to use to log in to the instance via SSH
 
 * invoke the following commands:
- * **export AWS\_ACCESS\_KEY=YOURIAMACCESSKEY**
- * **export AWS\_SECRET\_KEY=YOURIAMSECRETKEY**
- * **ansible-playbook ec2\_proftpd.yml**
+ * export AWS\_ACCESS\_KEY=**YOURIAMACCESSKEY**
+ * export AWS\_SECRET\_KEY=**YOURIAMSECRETKEY**
+ * ansible-playbook ec2\_proftpd.yml
