@@ -1,5 +1,5 @@
 ## ec2\_proftpd.yml
-This playbook will perform the following actions:
+This playbook performs the following actions:
 
 * ensure an 'ftpd' security group exists (TCP 20-22, 25000-27000)
 * create a t1.micro instance
