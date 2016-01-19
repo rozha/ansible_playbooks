@@ -1,9 +1,8 @@
 ## ec2\_proftpd.yml
-This playbook performs the following actions:
 
 * ensure an 'ftpd' security group exists (TCP 20-22, 25000-27000)
 * create a t1.micro instance
-* update the system using a package manager
+* update system using the package manager
 * install, configure, and run ProFTPD and fail2ban
 
 Tested with the following AMIs:
@@ -12,7 +11,7 @@ Tested with the following AMIs:
 * ami-246ed34c Amazon Linux AMI 2014.09.1 (PV), 64 bit
 * ami-1643ff7e Red Hat Enterprise Linux 6.5 (PV), 64 bit
 
-To use:
+Usage:
 
 * edit **vars/ec2\_proftpd**
  * **image**: AMI to create your new instance from
