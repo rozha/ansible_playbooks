@@ -1,0 +1,30 @@
+---
+openvpn_server_port: 1488
+openvpn_server_protocol: udp
+openvpn_server_dev: tun
+openvpn_server_mtu: 1400
+openvpn_dh:          /etc/easy-rsa/keys/dh2048.pem
+openvpn_ca_cert:     /etc/easy-rsa/keys/ca.crt
+openvpn_ca_key:      /etc/easy-rsa/keys/ca.key
+openvpn_server_csr:  /etc/easy-rsa/keys/server.csr
+openvpn_server_cert: /etc/easy-rsa/keys/server.crt
+openvpn_server_key:  /etc/easy-rsa/keys/server.key
+openvpn_server_key_bits: 4096
+openvpn_server_conf: /etc/openvpn/server.conf
+openvpn_server_network: 172.16.55.0
+openvpn_server_mask: 255.255.255.0
+openvpn_server_user: nobody
+openvpn_server_group: nogroup
+openvpn_server_status_log: /var/log/openvpn/server-status.log
+openvpn_server_log: /var/log/openvpn/server.log
+openvpn_server_verb: 3
+openvpn_server_cipher: DES-EDE3-CBC
+openvpn_server_keepalive: "10 120"
+openvpn_server_lzo: true
+
+openvpn_client_key:  /etc/easy-rsa/keys/client0001.key
+openvpn_client_csr:  /etc/easy-rsa/keys/client0001.csr
+openvpn_client_cert: /etc/easy-rsa/keys/client0001.crt
+openvpn_client_key_bits: 4096
+
+openvpn_network: 172.16.55.0/24

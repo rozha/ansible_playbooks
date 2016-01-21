@@ -1,0 +1,29 @@
+---
+- name: Install and configure OpenVPN server
+  hosts: openvpn_server
+
+  roles:
+    - update_system
+    - openvpn_server
+
+  environment:
+    - EASY_RSA: /etc/easy-rsa
+    - OPENSSL: openssl
+    - PKCS11TOOL: pkcs11-tool
+    - GREP: grep
+    - KEY_CONFIG: /etc/easy-rsa/openssl-1.0.0.cnf
+    - KEY_DIR: /etc/easy-rsa/keys
+    - PKCS11_MODULE_PATH: dummy
+    - PKCS11_PIN: dummy
+    - KEY_SIZE: 2048
+    - CA_EXPIRE: 3652
+    - KEY_EXPIRE: 3652
+    - KEY_COUNTRY: US
+    - KEY_PROVINCE: CA
+    - KEY_CITY: SanFrancisco
+    - KEY_ORG: "Fort-Funston"
+    - KEY_EMAIL: me@myhost.mydomain
+    - KEY_OU: MyOrganizationalUnit
+    - KEY_NAME: EasyRSA
+    - KEY_CN: CommonName
+    - KEY_ALTNAMES: ""

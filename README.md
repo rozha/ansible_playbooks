@@ -26,3 +26,9 @@ Usage:
  * export AWS\_ACCESS\_KEY=**YOURIAMACCESSKEY**
  * export AWS\_SECRET\_KEY=**YOURIAMSECRETKEY**
  * ansible-playbook ec2\_proftpd.yml
+
+## openvpn\_server.yml
+
+Configure and run an OpenVPN server.
+
+* Only Debian and Ubuntu are supported at the moment.
