@@ -1,14 +1,21 @@
 ---
-- name: only Debian-based distros are supported
-  fail: msg="Only Debian-based distros are currently supported"
-  when: ansible_os_family != "Debian"
-
-- name: apt-get install openvpn rsync
-  apt: name={{ item }}
+- name: apt-get install rsync openvpn
+  apt: name={{ item }} state=present
   with_items:
-    - openvpn
     - rsync
+    - openvpn
   when: ansible_os_family == "Debian"
+
+- name: ensure EPEL is enabled
+  yum: name=epel-release state=present
+
+- name: yum install rsync openvpn rsync easy-rsa
+  yum: name={{ item }} state=present
+  with_items:
+    - rsync
+    - openvpn
+    - easy-rsa
+  when: ansible_os_family == "RedHat"
 
 - name: ensure /var/log/openvpn exists
   file: path=/var/log/openvpn owner=root group=root mode=0700 recurse=yes state=directory
@@ -17,9 +24,13 @@
   stat: path=/etc/easy-rsa
   register: etc_easy_rsa
 
-- name: rsync /usr/share/easy-rsa to /etc/easy-rsa
+- name: rsync /usr/share/easy-rsa to /etc/easy-rsa (Debian)
   command: rsync -a /usr/share/easy-rsa/ /etc/easy-rsa/
-  when: etc_easy_rsa.stat.isdir is not defined
+  when: etc_easy_rsa.stat.isdir is not defined and ansible_os_family == "Debian"
+
+- name: rsync /usr/share/easy-rsa/2.0 to /etc/easy-rsa (RedHat)
+  command: rsync -a /usr/share/easy-rsa/2.0/ /etc/easy-rsa/
+  when: etc_easy_rsa.stat.isdir is not defined and ansible_os_family == "RedHat"
 
 - name: check if /etc/easy-rsa/keys exists
   stat: path=/etc/easy-rsa/keys
@@ -93,7 +104,7 @@
   command: '/usr/bin/openssl x509 -req -days $KEY_EXPIRE -in {{ openvpn_client_csr }} -CA {{ openvpn_ca_cert }} -CAkey {{ openvpn_ca_key }} -set_serial 02 -out {{ openvpn_client_cert }}'
   when: client_cert.stat.isreg is not defined
 
-- name: upload server.conf to /etc/server/server.conf
+- name: upload server.conf to /etc/openvpn/server.conf
   template: src=server.conf.j2 dest={{ openvpn_server_conf }} owner=root mode=0400
 
 - name: enable net.ipv4.ip_forward
@@ -105,12 +116,14 @@
 - name: add iptables to /etc/rc.local
   lineinfile: dest=/etc/rc.local line='/sbin/iptables -t nat -I POSTROUTING -s {{ openvpn_network }} ! -d {{ openvpn_network }} -j MASQUERADE'
 
-- name: stop openvpn
-  service: name=openvpn state=stopped
-
 - name: reload systemd
   sudo: yes
   command: systemctl daemon-reload
 
-- name: start openvpn
-  service: name=openvpn state=started enabled=yes 
+- name: restart openvpn (Debian)
+  service: name=openvpn state=restarted enabled=yes
+  when: ansible_os_family == "Debian"
+
+- name: restart openvpn (RedHat)
+  service: name=openvpn@server.service state=restarted enabled=yes
+  when: ansible_os_family == "RedHat"

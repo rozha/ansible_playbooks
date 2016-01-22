@@ -4,7 +4,14 @@
 
   roles:
     - update_system
-    - openvpn_server
+    - { role: openvpn_server,
+        openvpn_server_user: nobody,
+        openvpn_server_group: nogroup,
+        when: "ansible_os_family == 'Debian'" }
+    - { role: openvpn_server,
+        openvpn_server_user: openvpn,
+        openvpn_server_group: openvpn,
+        when: "ansible_os_family == 'RedHat'" }
 
   environment:
     - EASY_RSA: /etc/easy-rsa
@@ -15,7 +22,7 @@
     - KEY_DIR: /etc/easy-rsa/keys
     - PKCS11_MODULE_PATH: dummy
     - PKCS11_PIN: dummy
-    - KEY_SIZE: 2048
+    - KEY_SIZE: "{{ openvpn_server_key_bits }}"
     - CA_EXPIRE: 3652
     - KEY_EXPIRE: 3652
     - KEY_COUNTRY: US
