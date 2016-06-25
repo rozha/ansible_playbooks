@@ -1,7 +1,6 @@
 port                {{ openvpn_server_port }}
 proto               {{ openvpn_server_protocol }}
 dev                 {{ openvpn_server_dev }}
-tun-mtu             {{ openvpn_server_mtu }}
 ca                  "ca.crt"
 cert                "client0001.crt"
 key                 "client0001.key"
@@ -12,6 +11,8 @@ cipher              {{ openvpn_server_cipher }}
 {% if openvpn_server_lzo %}
 comp-lzo
 {% endif %}
+pull
+mssfix
 #user                {{ openvpn_server_user }}
 #group               {{ openvpn_server_group }}
 persist-key
