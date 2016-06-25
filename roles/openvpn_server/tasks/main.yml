@@ -164,6 +164,15 @@
   tags:
     - openvpn
 
+- name: fix perms
+  file: path={{ item }} owner=root group=root mode=0600
+  with_items:
+    - '{{ openvpn_ca_key }}'
+    - '{{ openvpn_server_key }}'
+    - '{{ openvpn_client_key }}'
+  tags:
+    - openvpn
+
 - name: enable net.ipv4.ip_forward
   sysctl: name=net.ipv4.ip_forward value=1 state=present
   tags:
