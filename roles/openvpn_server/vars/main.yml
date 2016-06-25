@@ -3,7 +3,7 @@ openvpn_server_port:        1488
 openvpn_server_protocol:    udp
 openvpn_server_dev:         tun
 openvpn_server_mtu:         1400
-openvpn_dh:                 /etc/easy-rsa/keys/dh2048.pem
+openvpn_dh:                 /etc/easy-rsa/keys/dh4096.pem
 openvpn_ca_cert:            /etc/easy-rsa/keys/ca.crt
 openvpn_ca_key:             /etc/easy-rsa/keys/ca.key
 openvpn_server_csr:         /etc/easy-rsa/keys/server.csr

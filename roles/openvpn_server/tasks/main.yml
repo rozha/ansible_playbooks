@@ -40,7 +40,7 @@
   command: /etc/easy-rsa/clean-all
   when: etc_easy_rsa_keys.stat.isdir is not defined
 
-- name: check if /etc/easy-rsa/keys/dh2048.pem exists
+- name: check if /etc/easy-rsa/keys/dh4096.pem exists
   stat: path={{ openvpn_dh }}
   register: dh_pem
 
