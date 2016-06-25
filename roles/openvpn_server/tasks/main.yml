@@ -25,11 +25,11 @@
   register: etc_easy_rsa
 
 - name: rsync /usr/share/easy-rsa to /etc/easy-rsa (Debian)
-  command: rsync -a /usr/share/easy-rsa/ /etc/easy-rsa/
+  command: rsync -aH /usr/share/easy-rsa/ /etc/easy-rsa/
   when: etc_easy_rsa.stat.isdir is not defined and ansible_os_family == "Debian"
 
 - name: rsync /usr/share/easy-rsa/2.0 to /etc/easy-rsa (RedHat)
-  command: rsync -a /usr/share/easy-rsa/2.0/ /etc/easy-rsa/
+  command: rsync -aH /usr/share/easy-rsa/2.0/ /etc/easy-rsa/
   when: etc_easy_rsa.stat.isdir is not defined and ansible_os_family == "RedHat"
 
 - name: check if /etc/easy-rsa/keys exists
