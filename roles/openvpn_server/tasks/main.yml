@@ -5,9 +5,13 @@
     - rsync
     - openvpn
   when: ansible_os_family == "Debian"
+  tags:
+    - openvpn
 
 - name: ensure EPEL is enabled
   yum: name=epel-release state=present
+  tags:
+    - openvpn
 
 - name: install required packages (RedHat)
   yum: name={{ item }} state=present
@@ -16,117 +20,179 @@
     - openvpn
     - easy-rsa
   when: ansible_os_family == "RedHat"
+  tags:
+    - openvpn
 
 - name: ensure /var/log/openvpn exists
   file: path=/var/log/openvpn owner=root group=root mode=0700 recurse=yes state=directory
+  tags:
+    - openvpn
 
 - name: check if /etc/easy-rsa exists
   stat: path=/etc/easy-rsa
   register: etc_easy_rsa
+  tags:
+    - openvpn
 
 - name: rsync /usr/share/easy-rsa to /etc/easy-rsa (Debian)
   command: rsync -aH /usr/share/easy-rsa/ /etc/easy-rsa/
   when: etc_easy_rsa.stat.isdir is not defined and ansible_os_family == "Debian"
+  tags:
+    - openvpn
 
 - name: rsync /usr/share/easy-rsa/2.0 to /etc/easy-rsa (RedHat)
   command: rsync -aH /usr/share/easy-rsa/2.0/ /etc/easy-rsa/
   when: etc_easy_rsa.stat.isdir is not defined and ansible_os_family == "RedHat"
+  tags:
+    - openvpn
 
 - name: check if /etc/easy-rsa/keys exists
   stat: path=/etc/easy-rsa/keys
   register: etc_easy_rsa_keys
+  tags:
+    - openvpn
 
 - name: clean all
   command: /etc/easy-rsa/clean-all
   when: etc_easy_rsa_keys.stat.isdir is not defined
+  tags:
+    - openvpn
 
 - name: check if /etc/easy-rsa/keys/dh4096.pem exists
   stat: path={{ openvpn_dh }}
   register: dh_pem
+  tags:
+    - openvpn
 
 - name: build dh
   command: /etc/easy-rsa/build-dh
   when: dh_pem.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: check if /etc/easy-rsa/keys/ca.crt exists
   stat: path={{ openvpn_ca_cert }}
   register: ca_cert
+  tags:
+    - openvpn
 
 - name: pkitool --initca
   command: /etc/easy-rsa/pkitool --initca
   when: ca_cert.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: check if /etc/easy-rsa/keys/server.key exists
   stat: path={{ openvpn_server_key }}
   register: server_key
+  tags:
+    - openvpn
 
 - name: generate server key
   command: /usr/bin/openssl genrsa -out {{ openvpn_server_key }} {{ openvpn_server_key_bits }}
   when: server_key.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: check if /etc/easy-rsa/keys/server.csr exists
   stat: path={{ openvpn_server_csr }}
   register: server_csr
+  tags:
+    - openvpn
 
 - name: generate server csr
   command: '/usr/bin/openssl req -subj "/CN=${KEY_CN}/O=${KEY_NAME}/C=${KEY_COUNTRY}" -config /etc/easy-rsa/openssl-1.0.0.cnf -new -key {{ openvpn_server_key }} -out {{ openvpn_server_csr }}'
   when: server_csr.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: check if /etc/easy-rsa/keys/server.crt exists
   stat: path={{ openvpn_server_cert }}
   register: server_cert
+  tags:
+    - openvpn
 
 - name: generate and sign server cert
   command: '/usr/bin/openssl x509 -req -days $KEY_EXPIRE -in {{ openvpn_server_csr }} -CA {{ openvpn_ca_cert }} -CAkey {{ openvpn_ca_key }} -set_serial 01 -out {{ openvpn_server_cert }}'
   when: server_cert.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: check if client key exists
   stat: path={{ openvpn_client_key }}
   register: client_key
+  tags:
+    - openvpn
 
 - name: generate client key
   command: /usr/bin/openssl genrsa -out {{ openvpn_client_key }} {{ openvpn_client_key_bits }}
   when: client_key.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: check if client csr exists
   stat: path={{ openvpn_client_csr }}
   register: client_csr
+  tags:
+    - openvpn
 
 - name: generate client csr
   command: '/usr/bin/openssl req -subj "/CN=${KEY_CN}/O=${KEY_NAME}/C=${KEY_COUNTRY}" -config /etc/easy-rsa/openssl-1.0.0.cnf -new -key {{ openvpn_client_key }} -out {{ openvpn_client_csr }}'
   when: client_csr.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: check if client cert exists
   stat: path={{ openvpn_client_cert }}
   register: client_cert
+  tags:
+    - openvpn
 
 - name: generate and sign client cert
   command: '/usr/bin/openssl x509 -req -days $KEY_EXPIRE -in {{ openvpn_client_csr }} -CA {{ openvpn_ca_cert }} -CAkey {{ openvpn_ca_key }} -set_serial 02 -out {{ openvpn_client_cert }}'
   when: client_cert.stat.isreg is not defined
+  tags:
+    - openvpn
 
 - name: upload server.conf to /etc/openvpn/server.conf
   template: src=server.conf.j2 dest={{ openvpn_server_conf }} owner=root mode=0400
+  tags:
+    - openvpn
 
 - name: generate client0001.conf to /etc/openvpn/client0001.conf
   template: src=client.conf.j2 dest={{ openvpn_client_conf }} owner=root mode=0400
+  tags:
+    - openvpn
 
 - name: enable net.ipv4.ip_forward
   sysctl: name=net.ipv4.ip_forward value=1 state=present
+  tags:
+    - openvpn
 
 - name: enable masquerading
   command: /sbin/iptables -t nat -I POSTROUTING -s {{ openvpn_server_network }} ! -d {{ openvpn_server_network }} -j MASQUERADE
+  tags:
+    - openvpn
 
 - name: add iptables to /etc/rc.local
   lineinfile: dest=/etc/rc.local line='/sbin/iptables -t nat -I POSTROUTING -s {{ openvpn_network }} ! -d {{ openvpn_network }} -j MASQUERADE'
+  tags:
+    - openvpn
 
 - name: reload systemd
   become: yes
   command: systemctl daemon-reload
+  tags:
+    - openvpn
 
 - name: restart openvpn (Debian)
   service: name=openvpn state=restarted enabled=yes
   when: ansible_os_family == "Debian"
+  tags:
+    - openvpn
 
 - name: restart openvpn (RedHat)
   service: name=openvpn@server.service state=restarted enabled=yes
   when: ansible_os_family == "RedHat"
+  tags:
+    - openvpn
