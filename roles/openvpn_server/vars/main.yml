@@ -24,5 +24,6 @@ openvpn_client_key:         /etc/easy-rsa/keys/client0001.key
 openvpn_client_csr:         /etc/easy-rsa/keys/client0001.csr
 openvpn_client_cert:        /etc/easy-rsa/keys/client0001.crt
 openvpn_client_key_bits:    4096
+openvpn_client_conf:        /etc/openvpn/client0001.conf
 
 openvpn_network:            172.16.55.0/24

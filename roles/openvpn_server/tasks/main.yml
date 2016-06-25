@@ -107,6 +107,9 @@
 - name: upload server.conf to /etc/openvpn/server.conf
   template: src=server.conf.j2 dest={{ openvpn_server_conf }} owner=root mode=0400
 
+- name: generate client0001.conf to /etc/openvpn/client0001.conf
+  template: src=client.conf.j2 dest={{ openvpn_client_conf }} owner=root mode=0400
+
 - name: enable net.ipv4.ip_forward
   sysctl: name=net.ipv4.ip_forward value=1 state=present
 
