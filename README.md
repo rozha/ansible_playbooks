@@ -29,6 +29,4 @@ Usage:
 
 ## openvpn\_server.yml
 
-Configure and run an OpenVPN server.
-
-* Only Debian and Ubuntu are supported at the moment.
+Configure and run an OpenVPN server.  Tested on Debian 8, Ubuntu 12.04, and CentOS 7.
