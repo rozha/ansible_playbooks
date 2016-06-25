@@ -120,7 +120,7 @@
   lineinfile: dest=/etc/rc.local line='/sbin/iptables -t nat -I POSTROUTING -s {{ openvpn_network }} ! -d {{ openvpn_network }} -j MASQUERADE'
 
 - name: reload systemd
-  sudo: yes
+  become: yes
   command: systemctl daemon-reload
 
 - name: restart openvpn (Debian)
