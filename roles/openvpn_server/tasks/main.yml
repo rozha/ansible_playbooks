@@ -170,7 +170,7 @@
     - openvpn
 
 - name: enable masquerading
-  command: /sbin/iptables -t nat -I POSTROUTING -s {{ openvpn_server_network }} ! -d {{ openvpn_server_network }} -j MASQUERADE
+  command: /sbin/iptables -t nat -I POSTROUTING -s {{ openvpn_network }} ! -d {{ openvpn_network }} -j MASQUERADE
   tags:
     - openvpn
 
