@@ -1,0 +1,28 @@
+---
+- name: create a Digital Ocean droplet
+  hosts: localhost
+  gather_facts: no
+  roles:
+    - digital_ocean_create_droplet
+  vars:
+    digital_ocean_droplet_name: openvpn
+
+- hosts: digital_ocean_hosts
+  gather_facts: no
+  tasks:
+  - name: wait for droplet to become reachable
+    wait_for_connection:
+
+- name: install and configure OpenVPN server
+  hosts: digital_ocean_hosts
+
+  roles:
+    - update_system
+    - { role: openvpn_server,
+        openvpn_server_user: nobody,
+        openvpn_server_group: nogroup,
+        when: "ansible_os_family == 'Debian'" }
+    - { role: openvpn_server,
+        openvpn_server_user: openvpn,
+        openvpn_server_group: openvpn,
+        when: "ansible_os_family == 'RedHat'" }
