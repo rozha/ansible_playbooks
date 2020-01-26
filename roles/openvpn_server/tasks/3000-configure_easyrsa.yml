@@ -1,0 +1,40 @@
+---
+- name: easyrsa init-pki
+  command:
+    chdir: "{{ openvpn_server_easyrsa_dir }}"
+    cmd: "/bin/bash ./easyrsa --pki-dir={{ openvpn_server_pki_dir }} init-pki"
+    creates: "{{ openvpn_server_pki_dir }}"
+  tags:
+    - openvpn
+
+- name: easyrsa gen-dh (will take some time...)
+  command:
+    chdir: "{{ openvpn_server_easyrsa_dir }}"
+    cmd: "/bin/bash ./easyrsa --pki-dir={{ openvpn_server_pki_dir }} --keysize={{ openvpn_server_dh_bits }} gen-dh"
+    creates: "{{ openvpn_server_pki_dir }}/dh.pem"
+  tags:
+    - openvpn
+
+- name: easyrsa build-ca
+  command:
+    chdir: "{{ openvpn_server_easyrsa_dir }}"
+    cmd: "/bin/bash ./easyrsa --pki-dir={{ openvpn_server_pki_dir }} --days={{ openvpn_server_ca_cert_days }} --keysize={{ openvpn_server_key_bits }} --batch build-ca nopass"
+    creates: "{{ openvpn_server_pki_dir }}/private/ca.key"
+  tags:
+    - openvpn
+
+- name: easyrsa build-server-full
+  command: 
+    chdir: "{{ openvpn_server_easyrsa_dir }}"
+    cmd: "/bin/bash ./easyrsa --pki-dir={{ openvpn_server_pki_dir }} --days={{ openvpn_server_cert_days }} --keysize={{ openvpn_server_key_bits }} --batch build-server-full server nopass"
+    creates: "{{ openvpn_server_pki_dir }}/private/server.key"
+  tags:
+    - openvpn
+
+- name: easyrsa build-client-full
+  command:
+    chdir: "{{ openvpn_server_easyrsa_dir }}"
+    cmd: "/bin/bash ./easyrsa --pki-dir={{ openvpn_server_pki_dir }} --days={{ openvpn_server_client_cert_days }} --keysize={{ openvpn_server_client_key_bits }} --batch build-client-full client nopass"
+    creates: "{{ openvpn_server_pki_dir }}/private/client.key"
+  tags:
+    - openvpn

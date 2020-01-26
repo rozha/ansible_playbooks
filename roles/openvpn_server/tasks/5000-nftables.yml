@@ -1,0 +1,75 @@
+---
+- name: install nftables
+  apt:
+    pkg: nftables
+    state: present
+  tags:
+    - openvpn
+    - nftables
+
+- name: enable nftables
+  service:
+    name: nftables
+    enabled: yes
+  tags:
+    - openvpn
+    - nftables
+
+- name: nft add table nat
+  command: nft add table nat
+  tags:
+    - openvpn
+    - nftables
+
+- name: nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
+  command: nft add chain nat postrouting { type nat hook postrouting priority 100 ; }
+  tags:
+    - openvpn
+    - nftables
+
+- name: check whether masquerade rule already exists
+  shell: "nft list chain nat postrouting | grep masquerade || true"
+  register: _masquerade_st
+  tags:
+    - openvpn
+    - nftables
+
+- name: nft add rule nat postrouting masquerade
+  command: nft add rule nat postrouting masquerade
+  when: _masquerade_st.stdout == ""
+  tags:
+    - openvpn
+    - nftables
+
+- name: create updated nftables config file
+  tempfile:
+    state: file
+    suffix: nft
+  register: _tmp_nft_conf
+  when: _masquerade_st.stdout == ""
+  tags:
+    - openvpn
+    - nftables
+
+- name: populate updated nftables config file
+  shell:
+    cmd: "{{ item }}"
+  loop:
+    - "echo '#!/usr/sbin/nft -f' >> {{ _tmp_nft_conf.path }}"
+    - "echo ''                   >> {{ _tmp_nft_conf.path }}"
+    - "echo 'flush ruleset'      >> {{ _tmp_nft_conf.path }}"
+    - "echo ''                   >> {{ _tmp_nft_conf.path }}"
+    - "nft list ruleset          >> {{ _tmp_nft_conf.path }}"
+  when: _masquerade_st.stdout == ""
+  tags:
+    - openvpn
+    - nftables
+
+- name: install updated nftables config file
+  command:
+    cmd: "mv {{ _tmp_nft_conf.path }} {{ openvpn_server_nftables_config_file }}"
+    removes: "{{ _tmp_nft_conf.path }}"
+  when: _masquerade_st.stdout == ""
+  tags:
+    - openvpn
+    - nftables

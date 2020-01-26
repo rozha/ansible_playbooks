@@ -1,16 +1,9 @@
 port                {{ openvpn_server_port }}
 proto               {{ openvpn_server_protocol }}
 dev                 {{ openvpn_server_dev }}
-ca                  "ca.crt"
-cert                "client0001.crt"
-key                 "client0001.key"
-dh                  "dh4096.pem"
 tls-client
-remote              {{ inventory_hostname }}
+remote              {{ ansible_default_ipv4.address }}
 cipher              {{ openvpn_server_cipher }}
-{% if openvpn_server_lzo %}
-comp-lzo
-{% endif %}
 pull
 mssfix
 #user                {{ openvpn_server_user }}
@@ -20,3 +13,16 @@ persist-tun
 #status              {{ openvpn_server_status_log }}
 #log                 {{ openvpn_server_log }}
 #verb                {{ openvpn_server_verb }}
+
+<dh>
+{{ openvpn_server_payloads.dh }}
+</dh>
+<ca>
+{{ openvpn_server_payloads.ca_cert }}
+</ca>
+<cert>
+{{ openvpn_server_payloads.client_cert }}
+</cert>
+<key>
+{{ openvpn_server_payloads.client_key }}
+</key>

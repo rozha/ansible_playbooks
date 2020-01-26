@@ -1,0 +1,49 @@
+---
+- name: install required packages (Debian)
+  apt:
+    pkg:
+    - openvpn
+    state: present
+    install_recommends: no
+  when: ansible_os_family == "Debian"
+  tags:
+    - openvpn
+
+- name: ensure EPEL is enabled
+  yum:
+    pkg:
+      - epel-release
+    state: present
+  when: ansible_os_family == "RedHat"
+  tags:
+    - openvpn
+
+- name: install required packages (RedHat)
+  yum:
+    pkg:
+    - openvpn
+    state: present
+  when: ansible_os_family == "RedHat"
+  tags:
+    - openvpn
+
+- name: ensure /var/log/openvpn exists
+  file:
+    path: /var/log/openvpn
+    owner: root
+    group: root
+    mode: 0700
+    recurse: yes
+    state: directory
+  tags:
+    - openvpn
+
+- name: enable net.ipv4.ip_forward
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  tags:
+    - openvpn

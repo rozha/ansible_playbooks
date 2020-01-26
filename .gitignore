@@ -3,3 +3,4 @@
 hosts
 ansible.cfg
 README.html
+openvpn_conf/

@@ -1,0 +1,50 @@
+---
+- name: get cert/key payloads
+  command: "{{ item.command }}"
+  register: openvpn_server_payloads
+  loop:
+    - { name: ca_cert,
+        command: "openssl x509 -in {{ openvpn_server_pki_dir }}/ca.crt" }
+    - { name: server_cert,
+        command: "openssl x509 -in {{ openvpn_server_pki_dir }}/issued/server.crt" }
+    - { name: server_key,
+        command: "cat {{ openvpn_server_pki_dir }}/private/server.key" }
+    - { name: client_cert,
+        command: "openssl x509 -in {{ openvpn_server_pki_dir }}/issued/client.crt" }
+    - { name: client_key,
+        command: "cat {{ openvpn_server_pki_dir }}/private/client.key" }
+    - { name: dh,
+       command: "cat {{ openvpn_server_pki_dir }}/dh.pem" }
+  tags:
+    - openvpn
+    - payloads
+
+- set_fact:
+    openvpn_server_payloads: "{{ openvpn_server_payloads | json_query(openvpn_server_payloads_query) | items2dict }}"
+  vars:
+    openvpn_server_payloads_query: "results[*].{key: item.name, value: stdout}"
+  tags:
+    - openvpn
+    - payloads
+
+- name: create openvpn config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    mode: 0600
+  loop:
+    - { src: server.conf.j2, dest: "{{ openvpn_server_conf }}" }
+    - { src: client.conf.j2, dest: "{{ openvpn_server_client_conf }}" }
+  tags:
+    - openvpn
+    - payloads
+
+- name: enable openvpn server
+  service:
+    name: openvpn@server
+    enabled: yes
+    state: started
+  tags:
+    - openvpn
+    - payloads

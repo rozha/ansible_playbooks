@@ -1,29 +1,41 @@
 ---
-openvpn_server_port:        1488
-openvpn_server_protocol:    udp
-openvpn_server_dev:         tun
-openvpn_server_mtu:         1400
-openvpn_dh:                 /etc/easy-rsa/keys/dh4096.pem
-openvpn_ca_cert:            /etc/easy-rsa/keys/ca.crt
-openvpn_ca_key:             /etc/easy-rsa/keys/ca.key
-openvpn_server_csr:         /etc/easy-rsa/keys/server.csr
-openvpn_server_cert:        /etc/easy-rsa/keys/server.crt
-openvpn_server_key:         /etc/easy-rsa/keys/server.key
-openvpn_server_key_bits:    4096
-openvpn_server_conf:        /etc/openvpn/server.conf
-openvpn_server_network:     172.16.55.0
-openvpn_server_mask:        255.255.255.0
-openvpn_server_status_log:  /var/log/openvpn/server-status.log
-openvpn_server_log:         /var/log/openvpn/server.log
-openvpn_server_verb:        3
-openvpn_server_cipher:      DES-EDE3-CBC
-openvpn_server_keepalive:   "10 120"
-openvpn_server_lzo:         true
+openvpn_server_port:         1488
+openvpn_server_protocol:     udp
+openvpn_server_dev:          tun
+openvpn_server_mtu:          1400
+openvpn_server_openvpn_dir:  /etc/openvpn
+openvpn_server_log_dir:      /var/log/openvpn
 
-openvpn_client_key:         /etc/easy-rsa/keys/client0001.key
-openvpn_client_csr:         /etc/easy-rsa/keys/client0001.csr
-openvpn_client_cert:        /etc/easy-rsa/keys/client0001.crt
-openvpn_client_key_bits:    4096
-openvpn_client_conf:        /etc/openvpn/client0001.conf
+openvpn_server_easyrsa_dir:  /etc/easy-rsa
+openvpn_server_easyrsa_dist_url: "https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz"
+openvpn_server_easyrsa_dist_checksum: "sha256:cb29aed2d27824e59dbaad547f11dcab380a53c9fe05681249e804af436f1396"
 
-openvpn_network:            172.16.55.0/24
+openvpn_server_dh:           "{{ openvpn_server_easyrsa_dir }}/keys/dh4096.pem"
+openvpn_server_dh_bits:      2048
+openvpn_server_ca_cert:      "{{ openvpn_server_easyrsa_dir }}/keys/ca.crt"
+openvpn_server_ca_key:       "{{ openvpn_server_easyrsa_dir }}/keys/ca.key"
+openvpn_server_ca_cert_days: 3652
+openvpn_server_pki_dir:      "{{ openvpn_server_easyrsa_dir }}/pki"
+openvpn_server_csr:          "{{ openvpn_server_easyrsa_dir }}/keys/server.csr"
+openvpn_server_cert:         "{{ openvpn_server_easyrsa_dir }}/keys/server.crt"
+openvpn_server_cert_days:    3652
+openvpn_server_key:          "{{ openvpn_server_easyrsa_dir }}/keys/server.key"
+openvpn_server_key_bits:     4096
+openvpn_server_conf:         "{{ openvpn_server_openvpn_dir }}/server.conf"
+openvpn_server_network:      172.16.55.0
+openvpn_server_mask:         255.255.255.0
+openvpn_server_status_log:   "{{ openvpn_server_log_dir }}/server-status.log"
+openvpn_server_log:          "{{ openvpn_server_log_dir }}/server.log"
+openvpn_server_verb:         3
+openvpn_server_cipher:       DES-EDE3-CBC
+openvpn_server_keepalive:    "10 120"
+
+openvpn_server_client_csr:       "{{ openvpn_server_easyrsa_dir }}/keys/client-{{ ansible_default_ipv4.address }}.csr"
+openvpn_server_client_cert:      "{{ openvpn_server_easyrsa_dir }}/keys/client-{{ ansible_default_ipv4.address }}.crt"
+openvpn_server_client_cert_days: 3652
+openvpn_server_client_key:       "{{ openvpn_server_easyrsa_dir }}/keys/client-{{ ansible_default_ipv4.address }}.key"
+openvpn_server_client_key_bits:  4096
+openvpn_server_client_conf:      "{{ openvpn_server_openvpn_dir }}/client-{{ ansible_default_ipv4.address }}.conf"
+
+openvpn_server_nftables_config_file: /etc/nftables.conf
+openvpn_server_config_download_path: openvpn_conf/

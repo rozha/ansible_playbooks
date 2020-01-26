@@ -1,0 +1,50 @@
+---
+- name: download easyrsa
+  get_url:
+    url: "{{ openvpn_server_easyrsa_dist_url }}"
+    dest: "/tmp/{{ openvpn_server_easyrsa_dist_url.split('/')[-1] }}"
+    checksum: "{{ openvpn_server_easyrsa_dist_checksum }}"
+    tmp_dest: /tmp
+  tags:
+    - openvpn
+    - easyrsa
+
+- name: extract easyrsa distro
+  unarchive:
+    remote_src: yes
+    src: "/tmp/{{ openvpn_server_easyrsa_dist_url.split('/')[-1] }}"
+    dest: /tmp
+  tags:
+    - openvpn
+    - easyrsa
+
+- name: set fact for _easyrsa_src_dir
+  set_fact:
+    _easyrsa_src_dir: "/tmp/{{ openvpn_server_easyrsa_dist_url.split('/')[-1].rsplit('.', 1)[0].replace('unix-', '') }}"
+
+- name: create easyrsa directory
+  file:
+    path: "{{ openvpn_server_easyrsa_dir }}"
+    state: directory
+    mode: "0700"
+  tags:
+    - openvpn
+    - easyrsa
+
+- name: install easyrsa
+  command:
+    cmd: "mv {{ _easyrsa_src_dir }}/{{ item }} {{ openvpn_server_easyrsa_dir }}"
+    creates: "{{ openvpn_server_easyrsa_dir }}/{{ item }}"
+    removes: "{{ _easyrsa_src_dir }}/{{ item }}"
+  loop:
+    - easyrsa
+    - openssl-easyrsa.cnf
+    - x509-types
+  tags:
+    - openvpn
+    - easyrsa
+
+- name: clean up
+  file:
+    path: "{{ _easyrsa_src_dir }}"
+    state: absent
