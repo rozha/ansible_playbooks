@@ -4,6 +4,44 @@ This is a collection of Ansible roles I created to run my own automations for li
 
 # Available Roles
 
+## digital_ocean_droplet
+
+**Ansible >= 2.8 is required.**
+
+Don't forget to set the `DO_API_TOKEN' environment variable before firing up Ansible for this.
+
+If you wish to use SSH keys, which you probably do, you have to set `digital_ocean_droplet_ssh_keys` to the array containing ids of your ssh key[s].  For example:
+
+`ansible_playbook digital_ocean_openvpn.yml -e 'digital_ocean_droplet_ssh_keys="[12345]"'`
+
+Where **12345** is the identifier of your SSH key.  You can get ids of the SSH keys you uploaded to Digital Ocean using the following command
+
+`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer API_TOKEN" "https://api.digitalocean.com/v2/account/keys?page=1&per_page=100" | python -m json.tool`
+
+Make sure to replace **API_TOKEN** with your actual DO API token.  You can also append `| grep -E '"(id|name)"'` to the command provided above to see only ids and names of your keys.  There are other params such as image name, region, and vm size which can accept only predefined values.  To list those values, refer to https://developers.digitalocean.com/documentation/v2/.  Another option is to use [doctl](https://github.com/digitalocean/doctl "doctl github page"), e.g.
+
+`doctl compute ssh-key ls`
+
+### Supported variables and their default values
+
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+digital_ocean_droplet_name         | mydroplet | Name which will be used for your brand-new droplet
+digital_ocean_droplet_size         | s-1vcpu-1gb | Size of your droplet<br/>`doctl compute size ls`
+digital_ocean_droplet_image        | debian-10-x64 | Digital Ocean image used for droplet creation<br/>`doctl compute image list-distribution`
+digital_ocean_droplet_region       | sgp1 | Digital Ocean data center to run the droplet in<br/>`doctl compute region ls`
+digital_ocean_droplet_ipv6         | no | IPv6 support
+digital_ocean_droplet_backups      | no | Enable backups
+digital_ocean_droplet_monitoring   | no | Enable additional monitoring
+digital_ocean_droplet_unique_name  | no | Enable unique names
+digital_ocean_droplet_private_networking | no | Enable private networking
+digital_ocean_droplet_tags         | [] | Tags the droplet will be tagged with
+digital_ocean_droplet_volumes      | [] | Additional volumes to attach to the droplet
+digital_ocean_droplet_ssh_keys     | [] | SSH keys to add to the root user's authorized_keys<br/>`doctl compute ssh-key ls`
+digital_ocean_droplet_user_data    | | User data to initialise the droplet with
+digital_ocean_droplet_wait         | yes | Wait for droplet creation
+digital_ocean_droplet_wait_timeout | 600 | Max number of settings to wait for droplet upon its creation
+
 ## openvpn\_server
 
 **Ansible >= 2.4 is required.**

@@ -1,0 +1,29 @@
+---
+- name: create a new droplet
+  digital_ocean_droplet:
+    state: present
+    name: "{{ digital_ocean_droplet_name }}"
+    size: "{{ digital_ocean_droplet_size }}"
+    image: "{{ digital_ocean_droplet_image }}"
+    region: "{{ digital_ocean_droplet_region }}"
+    ssh_keys: "{{ digital_ocean_droplet_ssh_keys }}"
+
+    ipv6: "{{ digital_ocean_droplet_ipv6 }}"
+    tags: "{{ digital_ocean_droplet_tags }}"
+    backups: "{{ digital_ocean_droplet_backups }}"
+    volumes: "{{ digital_ocean_droplet_volumes }}"
+    user_data: "{{ digital_ocean_droplet_user_data }}"
+    monitoring: "{{ digital_ocean_droplet_monitoring }}"
+    unique_name: "{{ digital_ocean_droplet_unique_name }}"
+    private_networking: "{{ digital_ocean_droplet_private_networking }}"
+
+    wait: "{{ digital_ocean_droplet_wait }}"
+    wait_timeout: "{{ digital_ocean_droplet_wait_timeout }}"
+  register: new_digital_ocean_droplet
+
+- name: add new droplet to inventory
+  add_host:
+    groups: digital_ocean_hosts
+    name: "{{ digital_ocean_droplet_name }}"
+    ansible_ssh_host: "{{ new_digital_ocean_droplet.data.ip_address }}"
+    ansible_ssh_user: root

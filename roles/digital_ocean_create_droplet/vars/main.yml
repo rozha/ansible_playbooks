@@ -1,0 +1,19 @@
+---
+digital_ocean_droplet_name:   mydroplet
+digital_ocean_droplet_size:   s-1vcpu-1gb
+digital_ocean_droplet_image:  debian-10-x64
+digital_ocean_droplet_region: sgp1
+
+digital_ocean_droplet_ipv6:               no
+digital_ocean_droplet_backups:            no
+digital_ocean_droplet_monitoring:         no
+digital_ocean_droplet_unique_name:        no
+digital_ocean_droplet_private_networking: no
+
+digital_ocean_droplet_tags:     []
+digital_ocean_droplet_volumes:  []
+digital_ocean_droplet_ssh_keys: []
+digital_ocean_droplet_user_data:
+
+digital_ocean_droplet_wait: yes
+digital_ocean_droplet_wait_timeout: 600
