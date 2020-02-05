@@ -2,7 +2,7 @@
 - name: generate tls-auth key
   command:
     cmd: "openvpn --genkey --secret {{ openvpn_server_enable_tls_auth }}"
-    creates: "{{ openvpn_server_enable_tls_auth_key }}"
+    creates: "{{ openvpn_server_tls_auth_key }}"
   when: openvpn_server_enable_tls_auth
   tags:
     - openvpn
