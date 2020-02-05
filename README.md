@@ -10,7 +10,7 @@ This is a collection of Ansible roles I created to run my own automations for li
 
 Don't forget to set the `DO_API_TOKEN' environment variable before firing up Ansible for this.
 
-If you wish to use SSH keys, which you probably do, you have to set `digital_ocean_droplet_ssh_keys` to the array containing ids of your ssh key[s].  For example:
+If you wish to use SSH keys, which you probably do, you have to set the `digital_ocean_droplet_ssh_keys` Ansible variable to the array containing ids of your ssh key[s].  For example:
 
 `ansible_playbook digital_ocean_openvpn.yml -e 'digital_ocean_droplet_ssh_keys="[12345]"'`
 
@@ -18,9 +18,13 @@ Where **12345** is the identifier of your SSH key.  You can get ids of the SSH k
 
 `curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer API_TOKEN" "https://api.digitalocean.com/v2/account/keys?page=1&per_page=100" | python -m json.tool`
 
-Make sure to replace **API_TOKEN** with your actual DO API token.  You can also append `| grep -E '"(id|name)"'` to the command provided above to see only ids and names of your keys.  There are other params such as image name, region, and vm size which can accept only predefined values.  To list those values, refer to https://developers.digitalocean.com/documentation/v2/.  Another option is to use [doctl](https://github.com/digitalocean/doctl "doctl github page"), e.g.
+Make sure to replace **API_TOKEN** with your actual DO API token.  You can also append `| grep -E '"(id|name)"'` to the command provided above to limit the output to ids and names only.  There are other params such as image name, region, and vm size which can accept only predefined values.  To list those values, refer to https://developers.digitalocean.com/documentation/v2/.  Another option is to use [doctl](https://github.com/digitalocean/doctl "doctl github page"), e.g.
 
 `doctl compute ssh-key ls`
+
+`doctl compute image list-distribution`
+
+`doctl compute region ls`
 
 ### Supported variables and their default values
 
@@ -52,7 +56,7 @@ This role installs and configures OpenVPN server.  It also installs and configur
 
 So far, I've tested this role on Digital Ocean only.  Other cloud providers may or may not be tested in the future but should work with this role anyway.  It was tested with Debian 10 only for now.
 
-This role doesn't rely on the version of EasyRSA shipped in system packages.  Instead, it downloads EasyRSA distro from Github.
+This role doesn't rely on the version of EasyRSA shipped by your operating system.  Instead, it downloads EasyRSA distro from Github.  Also, upon successful completion this role downloads OpenVPN client configuration file to the **openvpn_server_config_download_path** directory which is **openvpn_conf** by default.  That configuration file contains all required key and cert data inlined.
 
 ### Supported variables and their default values
 
@@ -97,7 +101,7 @@ openvpn_server_config_download_path | openvpn_conf/ | Local directory to fetch O
 
 -----
 
-# Information below is highly outdated and left here for reference purposes only
+# Information below is outdated and left here for reference purposes only
 
 ## ec2\_proftpd.yml
 
