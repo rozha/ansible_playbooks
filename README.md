@@ -102,6 +102,8 @@ openvpn_server_enable_tls_auth | yes | Enable tls-auth settings
 openvpn_server_tls_auth_key | {{ openvpn_server_openvpn_dir }}/tls-auth.key | Path to store tls-auth key data
 openvpn_server_enable_management | yes | Enable OpenVPN server management interface
 openvpn_server_management_port | 9999 | OpenVPN server management interface port
+openvpn_server_client_enable_management | no | Enable OpenVPN client management interface
+openvpn_server_client_management_port | 9999 | OpenVPN client management interface port
 
 -----
 

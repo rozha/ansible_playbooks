@@ -11,6 +11,10 @@ mssfix
 persist-key
 persist-tun
 
+{% if openvpn_server_client_enable_management %}
+management localhost {{ openvpn_server_client_management_port }}
+{% endif %}
+
 {% if openvpn_server_enable_tls_auth %}
 key-direction 1
 <tls-auth>

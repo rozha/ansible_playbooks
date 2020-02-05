@@ -12,6 +12,9 @@ openvpn_server_tls_auth_key: "{{ openvpn_server_openvpn_dir }}/tls-auth.key"
 openvpn_server_enable_management: yes
 openvpn_server_management_port: 9999
 
+openvpn_server_client_enable_management: yes
+openvpn_server_client_management_port: 9999
+
 openvpn_server_easyrsa_dir: /etc/easy-rsa
 openvpn_server_easyrsa_dist_url: "https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz"
 openvpn_server_easyrsa_dist_checksum: "sha256:cb29aed2d27824e59dbaad547f11dcab380a53c9fe05681249e804af436f1396"
