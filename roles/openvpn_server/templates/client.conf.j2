@@ -10,9 +10,13 @@ mssfix
 #group               {{ openvpn_server_group }}
 persist-key
 persist-tun
-#status              {{ openvpn_server_status_log }}
-#log                 {{ openvpn_server_log }}
-#verb                {{ openvpn_server_verb }}
+
+{% if openvpn_server_enable_tls_auth %}
+key-direction 1
+<tls-auth>
+{{ openvpn_server_payloads.tls_auth }}
+</tls-auth>
+{% endif %}
 
 <dh>
 {{ openvpn_server_payloads.dh }}

@@ -10,8 +10,18 @@ group               {{ openvpn_server_group }}
 persist-key
 persist-tun
 status              {{ openvpn_server_status_log }}
+
+{% if openvpn_server_enable_logging %}
 log                 {{ openvpn_server_log }}
 verb                {{ openvpn_server_verb }}
+{% endif %}
+
+{% if openvpn_server_enable_tls_auth %}
+key-direction 0
+<tls-auth>
+{{ openvpn_server_payloads.tls_auth }}
+</tls-auth>
+{% endif %}
 
 <dh>
 {{ openvpn_server_payloads.dh }}
