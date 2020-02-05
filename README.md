@@ -98,7 +98,7 @@ openvpn_server_client_key_bits | 4096 | Size of OpenVPN client key
 openvpn_server_client_conf  | {{ openvpn_server_openvpn_dir }}/client-{{ ansible_default_ipv4.address }}.conf | Path OpenVPN client config will be stored in
 openvpn_server_nftables_config_file | /etc/nftables.conf | Path to nftables.conf
 openvpn_server_config_download_path | openvpn_conf/ | Local directory to fetch OpenVPN client configuration file to; if you want it it to be a file and overwritten at each run, remove the trailing slash and, optionally, append an extension.
-openvpn_server_enable_tls_auth | true | Enable tls-auth settings
+openvpn_server_enable_tls_auth | yes | Enable tls-auth settings
 openvpn_server_tls_auth_key | {{ openvpn_server_openvpn_dir }}/tls-auth.key | Path to store tls-auth key data
 
 -----
