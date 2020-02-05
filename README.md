@@ -100,6 +100,8 @@ openvpn_server_nftables_config_file | /etc/nftables.conf | Path to nftables.conf
 openvpn_server_config_download_path | openvpn_conf/ | Local directory to fetch OpenVPN client configuration file to; if you want it it to be a file and overwritten at each run, remove the trailing slash and, optionally, append an extension.
 openvpn_server_enable_tls_auth | yes | Enable tls-auth settings
 openvpn_server_tls_auth_key | {{ openvpn_server_openvpn_dir }}/tls-auth.key | Path to store tls-auth key data
+openvpn_server_enable_management | yes | Enable OpenVPN server management interface
+openvpn_server_management_port | 9999 | OpenVPN server management interface port
 
 -----
 

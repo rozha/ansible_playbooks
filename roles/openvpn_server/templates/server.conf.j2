@@ -16,6 +16,10 @@ log                 {{ openvpn_server_log }}
 verb                {{ openvpn_server_verb }}
 {% endif %}
 
+{% if openvpn_server_enable_management %}
+management localhost {{ openvpn_server_management_port }}
+{% endif %}
+
 {% if openvpn_server_enable_tls_auth %}
 key-direction 0
 <tls-auth>
