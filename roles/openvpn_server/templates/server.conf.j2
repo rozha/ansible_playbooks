@@ -11,6 +11,9 @@ persist-key
 persist-tun
 status              {{ openvpn_server_status_log }}
 
+# Route all client traffic through the VPN
+push "redirect-gateway def1"
+
 {% if openvpn_server_enable_logging %}
 log                 {{ openvpn_server_log }}
 verb                {{ openvpn_server_verb }}
