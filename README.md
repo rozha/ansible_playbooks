@@ -88,7 +88,7 @@ openvpn_server_mask         | 255.255.255.0 | Netmask of the network specified a
 openvpn_server_status_log   | {{ openvpn_server_log_dir }}/server-status.log | OpenVPN server status log ifle
 openvpn_server_log          | {{ openvpn_server_log_dir }}/server.log | OpenVPN server log file
 openvpn_server_verb         | 3 | OpenVPN server log ffile verbosity
-openvpn_server_cipher       | DES-EDE3-CBC | Cipher to be used for VPN connections
+openvpn_server_cipher       | AES-256-GCM | Cipher to be used for VPN connections
 openvpn_server_keepalive    | "10 120" | OpenVPN server keepalive settings
 openvpn_server_client_csr   | {{ openvpn_server_easyrsa_dir }}/keys/client-{{ ansible_default_ipv4.address }}.csr | File client CSR will be stored in
 openvpn_server_client_cert  | {{ openvpn_server_easyrsa_dir }}/keys/client-{{ ansible_default_ipv4.address }}.crt | Where to store client certificate
