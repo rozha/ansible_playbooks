@@ -50,8 +50,6 @@ digital_ocean_droplet_wait_timeout | 600 | Max number of seconds to wait for dro
 
 **Ansible >= 2.4 is required.**
 
-**netaddr Python module is required, `pip install netaddr`**
-
 This role installs and configures OpenVPN server.  It also installs and configures [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page "nftables wiki") if `/etc/nftables.conf` doesn't exist.
 
 So far, I've tested this role on Digital Ocean only.  Other cloud providers may or may not be tested in the future but should work with this role anyway.  It was tested with Debian 10 only for now.
