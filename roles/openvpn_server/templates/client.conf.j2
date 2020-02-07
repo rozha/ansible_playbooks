@@ -14,6 +14,8 @@ persist-tun
 auth-nocache
 fast-io
 
+remote-cert-tls server
+
 {% if openvpn_server_client_enable_management %}
 management localhost {{ openvpn_server_client_management_port }}
 {% endif %}
