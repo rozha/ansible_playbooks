@@ -10,6 +10,7 @@ user                {{ openvpn_server_user }}
 group               {{ openvpn_server_group }}
 persist-key
 persist-tun
+fast-io
 status              {{ openvpn_server_status_log }}
 
 # Route all client traffic through the VPN
