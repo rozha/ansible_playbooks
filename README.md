@@ -44,7 +44,7 @@ digital_ocean_droplet_volumes      | [] | Additional volumes to attach to the dr
 digital_ocean_droplet_ssh_keys     | [] | SSH keys to add to the root user's authorized_keys<br/>`doctl compute ssh-key ls`
 digital_ocean_droplet_user_data    | | User data to initialise the droplet with
 digital_ocean_droplet_wait         | yes | Wait for droplet creation
-digital_ocean_droplet_wait_timeout | 600 | Max number of settings to wait for droplet upon its creation
+digital_ocean_droplet_wait_timeout | 600 | Max number of seconds to wait for droplet upon its creation
 
 ## openvpn\_server
 
