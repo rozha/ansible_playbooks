@@ -11,6 +11,7 @@ mssfix
 #group               {{ openvpn_server_group }}
 persist-key
 persist-tun
+auth-nocache
 fast-io
 
 {% if openvpn_server_client_enable_management %}
