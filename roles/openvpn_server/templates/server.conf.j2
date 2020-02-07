@@ -5,6 +5,7 @@ tun-mtu             {{ openvpn_server_mtu }}
 server              {{ openvpn_server_network }} {{ openvpn_server_mask }}
 keepalive           {{ openvpn_server_keepalive }}
 cipher              {{ openvpn_server_cipher }}
+reneg-bytes         {{ openvpn_server_reneg_bytes }}
 user                {{ openvpn_server_user }}
 group               {{ openvpn_server_group }}
 persist-key

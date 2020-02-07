@@ -37,6 +37,7 @@ openvpn_server_status_log:   "{{ openvpn_server_log_dir }}/server-status.log"
 openvpn_server_log:          "{{ openvpn_server_log_dir }}/server.log"
 openvpn_server_verb:         3
 openvpn_server_cipher:       AES-256-GCM
+openvpn_server_reneg_bytes:  64000000 # renegatiate after every 64 megabytes
 openvpn_server_keepalive:    "10 120"
 
 openvpn_server_client_csr:       "{{ openvpn_server_easyrsa_dir }}/keys/client-{{ ansible_default_ipv4.address }}.csr"

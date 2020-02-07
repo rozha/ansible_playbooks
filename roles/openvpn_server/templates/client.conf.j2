@@ -4,6 +4,7 @@ dev                 {{ openvpn_server_dev }}
 tls-client
 remote              {{ ansible_default_ipv4.address }}
 cipher              {{ openvpn_server_cipher }}
+reneg-bytes         {{ openvpn_server_reneg_bytes }}
 pull
 mssfix
 #user                {{ openvpn_server_user }}
