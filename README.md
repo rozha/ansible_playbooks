@@ -30,9 +30,9 @@ Make sure to replace **API_TOKEN** with your actual DO API token.  You can also 
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-digital_ocean_droplet_name         | mydroplet | Name which will be used for your brand-new droplet
+digital_ocean_droplet_name         | mydroplet | Name of your brand-new droplet
 digital_ocean_droplet_size         | s-1vcpu-1gb | Size of your droplet<br/>`doctl compute size ls`
-digital_ocean_droplet_image        | debian-10-x64 | Digital Ocean image used for droplet creation<br/>`doctl compute image list-distribution`
+digital_ocean_droplet_image        | debian-10-x64 | Digital Ocean image to be used for droplet creation<br/>`doctl compute image list-distribution`
 digital_ocean_droplet_region       | sgp1 | Digital Ocean data center to run the droplet in<br/>`doctl compute region ls`
 digital_ocean_droplet_ipv6         | no | IPv6 support
 digital_ocean_droplet_backups      | no | Enable backups
